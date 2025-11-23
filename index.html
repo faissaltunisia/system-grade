@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>درجات الطالب - صلالة الشرقية</title>
+<link rel="stylesheet" href="style.css">
+<script src="html2pdf.bundle.min.js"></script>
+<script src="index.js" defer></script>
+</head>
+<body>
+
+<header>
+    <img src="logo.png" alt="لوجو المدرسة">
+    <div>
+        <h1>صلالة الشرقية للتعليم الأساسي</h1>
+        <h2>الفصل الدراسي الأول 2025-2026</h2>
+    </div>
+</header>
+
+<div class="container">
+    <h2>درجاتك</h2>
+    <div id="studentName"></div>
+    <div id="gradesList"></div>
+    <button onclick="downloadPDF()">تحميل تقرير PDF</button>
+    <p class="message" id="encouragement"></p>
+</div>
+
+</body>
+</html>
