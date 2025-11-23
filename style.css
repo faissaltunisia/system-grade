@@ -66,3 +66,17 @@ button:hover {
         font-size: 13px;
     }
 }
+@media print {
+    table {
+        width: 100%;
+        font-size: 12px;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 4px;
+    }
+    img {
+        width: 40px;
+        height: auto;
+    }
+}
