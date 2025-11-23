@@ -3,7 +3,7 @@ const gradesList = document.getElementById("gradesList");
 const encouragement = document.getElementById("encouragement");
 
 // عدّل هذا الرابط إلى رابط JSON في مستودعك
-const jsonURL = "https://raw.githubusercontent.com/faissaltunisia/system-grade/refs/heads/main/grades.json";
+const jsonURL = "https://raw.githubusercontent.com/username/grade-system/main/grades.json";
 
 let studentsData = [];
 
