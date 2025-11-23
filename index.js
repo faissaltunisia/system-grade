@@ -50,12 +50,13 @@ function downloadPDF() {
     const element = gradesList;
 
     const opt = {
-        margin:       [20,20,20,20], // مسافة حول الجدول
-        filename:     'تقرير_الطالب.pdf',
+        margin:       [20, 20, 20, 20],        // مسافة حول الجدول
+        filename:     'تقرير_الطالب.pdf',    // اسم الملف
         image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true },
-        jsPDF:        { unit: 'px', format: 'a4', orientation: 'landscape' } // إذا الجدول عريض استخدم 'landscape'
+        html2canvas:  { scale: 3, useCORS: true }, // زيادة الدقة لجعل النصوص واضحة
+        jsPDF:        { unit: 'px', format: 'a4', orientation: 'landscape' } // أفقية للجدول الكبير
     };
 
     html2pdf().set(opt).from(element).save();
 }
+
