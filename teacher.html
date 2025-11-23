@@ -2,29 +2,24 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>رفع درجات الطلاب - المعلم</title>
+<title>رفع درجات الطلاب</title>
+<link rel="stylesheet" href="style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="teacher.js" defer></script>
-<link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <header>
-    <img src="logo.png" alt="لوجو المدرسة" style="width:80px;">
+    <img src="logo.png" alt="لوجو المدرسة">
     <div>
-        <h1>صلالة الشرقية للتعليم الأساسي</h1>
-        <h2>صفحة المعلم - رفع درجات الطلاب</h2>
+        <h1>صفحة المعلم</h1>
+        <h2>رفع ملف Excel للطلاب</h2>
     </div>
 </header>
-
 <div class="container">
-    <h2>اختر ملف Excel لرفع درجات الطلاب</h2>
-    <input type="file" id="excelFile" accept=".xlsx, .xls">
-    <br><br>
-    <button onclick="uploadExcel()">تحميل وتحويل</button>
-    <p id="status"></p>
-    <pre id="preview"></pre>
+    <h2>اختر ملف Excel للطلاب</h2>
+    <input type="file" id="excelFile" accept=".xlsx,.xls"><br><br>
+    <button onclick="convertExcel()">تحويل ورفع</button>
+    <p id="status" class="message"></p>
 </div>
-
 </body>
 </html>
