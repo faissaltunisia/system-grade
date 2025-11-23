@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>رفع درجات الطلاب - المعلم</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="teacher.js" defer></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <img src="logo.png" alt="لوجو المدرسة" style="width:80px;">
+    <div>
+        <h1>صلالة الشرقية للتعليم الأساسي</h1>
+        <h2>صفحة المعلم - رفع درجات الطلاب</h2>
+    </div>
+</header>
+
+<div class="container">
+    <h2>اختر ملف Excel لرفع درجات الطلاب</h2>
+    <input type="file" id="excelFile" accept=".xlsx, .xls">
+    <br><br>
+    <button onclick="uploadExcel()">تحميل وتحويل</button>
+    <p id="status"></p>
+    <pre id="preview"></pre>
+</div>
+
+</body>
+</html>
