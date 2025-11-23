@@ -4,70 +4,29 @@
 <meta charset="UTF-8">
 <title>تسجيل دخول الطالب</title>
 <style>
-/* تصميم بسيط بدون CSS خارجي */
-body {
-    font-family: Arial, sans-serif;
-    background: #f9f9f9;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-}
-.container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-input, button {
-    padding: 10px;
-    width: 80%;
-    margin: 10px 0;
-    font-size: 16px;
-}
-button {
-    background-color: #00796b;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-button:hover {
-    background-color: #004d40;
-}
-.message {
-    color: red;
-    font-weight: bold;
-}
+body { font-family: Arial; background:#f9f9f9; text-align:center; margin:0; padding:0; }
+.container { max-width:400px; margin:50px auto; padding:20px; background:white; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1);}
+input, button { padding:10px; width:80%; margin:10px 0; font-size:16px; }
+button { background:#00796b; color:white; border:none; border-radius:6px; cursor:pointer; }
+button:hover { background:#004d40; }
+.message { color:red; font-weight:bold; }
 </style>
 <script>
 function loginStudent() {
-    const civilInput = document.getElementById("civil").value.trim();
-    const status = document.getElementById("status");
-
-    if (!civilInput) {
-        status.textContent = "الرجاء إدخال الرقم المدني!";
-        return;
-    }
-
-    // تخزين الرقم المدني في localStorage
-    localStorage.setItem("civilNumber", civilInput);
-
-    // إعادة التوجيه إلى صفحة عرض الدرجات
-    window.location.href = "index.html";
+    const civil = document.getElementById("civil").value.trim();
+    if(!civil){ document.getElementById("status").textContent="الرجاء إدخال الرقم المدني!"; return; }
+    localStorage.setItem("civilNumber", civil);
+    alert("تم تسجيل الدخول! سيتم تحويلك للصفحة الرئيسية."); // فقط اختبار
 }
 </script>
 </head>
 <body>
-
 <div class="container">
-    <h2>أدخل رقمك المدني</h2>
+    <h2>أدخل الرقم المدني</h2>
     <input type="text" id="civil" placeholder="الرقم المدني">
     <br>
     <button onclick="loginStudent()">تسجيل الدخول</button>
     <p id="status" class="message"></p>
 </div>
-
 </body>
 </html>
