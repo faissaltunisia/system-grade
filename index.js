@@ -47,24 +47,31 @@ function showGrades() {
 
 // تحميل التقرير PDF بشكل واضح
 function downloadPDF() {
-    const element = gradesList;
+    const original = gradesList.innerHTML; // حفظ الجدول الأصلي
 
-    const opt = {
-        margin:       [10,10,10,10],      // أقل من قبل
-        filename:     'تقرير_الطالب.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 1.5, useCORS: true }, // تقليل الدقة قليلاً لتلائم الصفحة
-        jsPDF:        { unit: 'px', format: 'a4', orientation: 'portrait' }
-    };
+    // إنشاء نسخة PDF مؤقتة
+    const temp = gradesList.cloneNode(true);
 
-    // قبل التحويل: تصغير حجم الجدول إذا كان كبير
-    element.style.width = "100%";
-    element.querySelectorAll("th, td").forEach(td => {
-        td.style.fontSize = "12px";       // تصغير الخط داخل PDF
-        td.style.padding = "5px";         // تقليل الحشو لتلائم الصفحة
+    // تعديل التنسيق للـ PDF
+    temp.style.width = "100%";
+    temp.querySelectorAll("th, td").forEach(td => {
+        td.style.fontSize = "10px";       // خط أصغر
+        td.style.padding = "4px";         // حشو أقل
+    });
+    temp.querySelectorAll("img").forEach(img => {
+        img.style.width = "40px";         // تصغير الصور
     });
 
-    html2pdf().set(opt).from(element).save();
+    // إنشاء PDF
+    const opt = {
+        margin: [10,10,10,10],
+        filename: 'تقرير_الطالب.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'px', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(temp).save().then(() => {
+        gradesList.innerHTML = original; // إعادة الجدول الأصلي بعد التحميل
+    });
 }
-
-
