@@ -2,7 +2,8 @@ const studentName = document.getElementById("studentName");
 const gradesList = document.getElementById("gradesList");
 const encouragement = document.getElementById("encouragement");
 
-const jsonURL = "https://raw.githubusercontent.com/faissaltunisia/system-grade/refs/heads/main/grades.json"; // عدّل هنا
+// عدّل هذا الرابط إلى رابط JSON في مستودعك
+const jsonURL = "https://raw.githubusercontent.com/username/grade-system/main/grades.json";
 
 let studentsData = [];
 
@@ -14,9 +15,18 @@ fetch(jsonURL)
 function showGrades() {
     const civilNumber = localStorage.getItem("civilNumber");
     if (!civilNumber) { window.location.href = "login.html"; return; }
+
     const student = studentsData.find(s => s.civil == civilNumber);
-    if (!student) { studentName.textContent = "لم يتم العثور على الطالب!"; gradesList.innerHTML=""; encouragement.textContent=""; return; }
+
+    if (!student) {
+        alert("الرقم المدني غير موجود. الرجاء المحاولة مرة أخرى.");
+        localStorage.removeItem("civilNumber");
+        window.location.href = "login.html";
+        return;
+    }
+
     studentName.innerHTML = `<img src="${student.photo}" alt="صورة الطالب" style="width:60px;border-radius:50%;margin-right:10px;"> ${student.name}`;
+
     let tableHTML = `<table><tr><th>المادة</th><th>الدرجة</th><th>الحالة</th></tr>`;
     for (const [key, value] of Object.entries(student)) {
         if (["civil","name","photo"].includes(key)) continue;
@@ -25,6 +35,7 @@ function showGrades() {
     }
     tableHTML += "</table>";
     gradesList.innerHTML = tableHTML;
+
     const grades = Object.entries(student).filter(([k,v])=>!["civil","name","photo"].includes(k)).map(([k,v])=>v);
     const avg = grades.reduce((a,b)=>a+b,0)/grades.length;
     encouragement.textContent = avg >= 80 ? "عمل رائع! استمر هكذا 👍" : "لا بأس، يمكنك التحسن مع الممارسة 💪";
