@@ -50,13 +50,21 @@ function downloadPDF() {
     const element = gradesList;
 
     const opt = {
-        margin:       [20, 20, 20, 20],        // مسافة حول الجدول
-        filename:     'تقرير_الطالب.pdf',    // اسم الملف
+        margin:       [10,10,10,10],      // أقل من قبل
+        filename:     'تقرير_الطالب.pdf',
         image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 3, useCORS: true }, // زيادة الدقة لجعل النصوص واضحة
-        jsPDF:        { unit: 'px', format: 'a4', orientation: 'landscape' } // أفقية للجدول الكبير
+        html2canvas:  { scale: 1.5, useCORS: true }, // تقليل الدقة قليلاً لتلائم الصفحة
+        jsPDF:        { unit: 'px', format: 'a4', orientation: 'portrait' }
     };
+
+    // قبل التحويل: تصغير حجم الجدول إذا كان كبير
+    element.style.width = "100%";
+    element.querySelectorAll("th, td").forEach(td => {
+        td.style.fontSize = "12px";       // تصغير الخط داخل PDF
+        td.style.padding = "5px";         // تقليل الحشو لتلائم الصفحة
+    });
 
     html2pdf().set(opt).from(element).save();
 }
+
 
