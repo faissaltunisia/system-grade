@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>تسجيل الدخول - صلالة الشرقية</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <h2>تسجيل الدخول بالرقم المدني</h2>
+    <input type="text" id="civilLogin" placeholder="الرقم المدني">
+    <button onclick="login()">دخول</button>
+    <p id="status"></p>
+</div>
+<script>
+function login() {
+    const civil = document.getElementById("civilLogin").value.trim();
+    if (!civil) {
+        document.getElementById("status").textContent = "الرجاء إدخال الرقم المدني!";
+        return;
+    }
+    // نقل الرقم المدني إلى index.html عبر localStorage
+    localStorage.setItem("civilNumber", civil);
+    window.location.href = "index.html";
+}
+</script>
+</body>
+</html>
