@@ -4,7 +4,7 @@ const gradesList = document.getElementById("gradesList");
 const encouragement = document.getElementById("encouragement");
 
 // رابط JSON على GitHub (غيره بالرابط الخاص بك)
-const jsonURL = "https://raw.githubusercontent.com/username/repo/main/grades.json"; // عدّل username و repo و main
+const jsonURL = "https://raw.githubusercontent.com/faissaltunisia/system-grade/refs/heads/main/JSON.js"; // عدّل username و repo و main
 
 let studentsData = [];
 
