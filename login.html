@@ -2,27 +2,28 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>تسجيل الدخول - صلالة الشرقية</title>
+<title>درجات الطالب - صلالة الشرقية</title>
 <link rel="stylesheet" href="style.css">
+<script src="html2pdf.bundle.min.js"></script>
+<script src="index.js" defer></script>
 </head>
 <body>
+
+<header>
+    <img src="logo.png" alt="لوجو المدرسة">
+    <div>
+        <h1>صلالة الشرقية للتعليم الأساسي</h1>
+        <h2>الفصل الدراسي الأول 2025-2026</h2>
+    </div>
+</header>
+
 <div class="container">
-    <h2>تسجيل الدخول بالرقم المدني</h2>
-    <input type="text" id="civilLogin" placeholder="الرقم المدني">
-    <button onclick="login()">دخول</button>
-    <p id="status"></p>
+    <h2>درجاتك</h2>
+    <div id="studentName"></div>
+    <div id="gradesList"></div>
+    <button onclick="downloadPDF()">تحميل تقرير PDF</button>
+    <p class="message" id="encouragement"></p>
 </div>
 
-<script>
-function login() {
-    const civil = document.getElementById("civilLogin").value.trim();
-    if (!civil) {
-        document.getElementById("status").textContent = "الرجاء إدخال الرقم المدني!";
-        return;
-    }
-    localStorage.setItem("civilNumber", civil);
-    window.location.href = "index.html";
-}
-</script>
 </body>
 </html>
