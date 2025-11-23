@@ -2,10 +2,25 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>درجات الطالب - صلالة الشرقية</title>
+<title>تسجيل دخول الطالب</title>
 <link rel="stylesheet" href="style.css">
-<script src="html2pdf.bundle.min.js"></script>
-<script src="index.js" defer></script>
+<script>
+function loginStudent() {
+    const civilInput = document.getElementById("civil").value.trim();
+    const status = document.getElementById("status");
+
+    if (!civilInput) {
+        status.textContent = "الرجاء إدخال الرقم المدني!";
+        return;
+    }
+
+    // تخزين الرقم المدني في localStorage
+    localStorage.setItem("civilNumber", civilInput);
+
+    // إعادة التوجيه إلى صفحة عرض الدرجات
+    window.location.href = "index.html";
+}
+</script>
 </head>
 <body>
 
@@ -13,16 +28,16 @@
     <img src="logo.png" alt="لوجو المدرسة">
     <div>
         <h1>صلالة الشرقية للتعليم الأساسي</h1>
-        <h2>الفصل الدراسي الأول 2025-2026</h2>
+        <h2>تسجيل دخول الطالب</h2>
     </div>
 </header>
 
 <div class="container">
-    <h2>درجاتك</h2>
-    <div id="studentName"></div>
-    <div id="gradesList"></div>
-    <button onclick="downloadPDF()">تحميل تقرير PDF</button>
-    <p class="message" id="encouragement"></p>
+    <h2>أدخل رقمك المدني</h2>
+    <input type="text" id="civil" placeholder="الرقم المدني">
+    <br>
+    <button onclick="loginStudent()">تسجيل الدخول</button>
+    <p id="status" class="message"></p>
 </div>
 
 </body>
