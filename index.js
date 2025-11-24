@@ -1,61 +1,86 @@
-const studentName = document.getElementById("studentName");
-const gradesList = document.getElementById("gradesList");
-const encouragement = document.getElementById("encouragement");
-
-// عدّل هذا الرابط إلى رابط JSON في مستودعك
-const jsonURL = "https://raw.githubusercontent.com/faissaltunisia/system-grade/refs/heads/main/grades.json";
-
-let studentsData = [];
-
-// جلب بيانات الطلاب
-fetch(jsonURL)
-  .then(res => res.json())
-  .then(data => { studentsData = data; showGrades(); })
-  .catch(err => { studentName.textContent = "حدث خطأ في تحميل البيانات!"; console.error(err); });
-
 function showGrades() {
-    const civilNumber = localStorage.getItem("civilNumber");
-    if (!civilNumber) { window.location.href = "login.html"; return; }
+    const civil = document.getElementById("civil").value.trim();
+    const status = document.getElementById("status");
+    const studentName = document.getElementById("studentName");
+    const gradesList = document.getElementById("gradesList");
+    const encouragement = document.getElementById("encouragement");
 
-    const student = studentsData.find(s => s.civil == civilNumber);
+    // مسح المحتوى القديم
+    status.innerHTML = "";
+    studentName.innerHTML = "";
+    gradesList.innerHTML = "";
+    encouragement.innerHTML = "";
 
-    if (!student) {
-        alert("الرقم المدني غير موجود. الرجاء المحاولة مرة أخرى.");
-        localStorage.removeItem("civilNumber");
-        window.location.href = "login.html";
+    if (!civil) {
+        status.innerHTML = "الرجاء إدخال الرقم المدني";
         return;
     }
 
-    // عرض صورة واسم الطالب
-    studentName.innerHTML = `<img src="${student.photo}" alt="صورة الطالب" style="width:60px;border-radius:50%;margin-right:10px;"> ${student.name}`;
+    status.innerHTML = "جارٍ تحميل البيانات...";
 
-    // إنشاء جدول الدرجات
-    let tableHTML = `<table><tr><th>المادة</th><th>الدرجة</th><th>الحالة</th></tr>`;
-    for (const [key, value] of Object.entries(student)) {
-        if (["civil","name","photo"].includes(key)) continue;
-        const statusIcon = value >= 50 ? "✔️" : "❌";
-        tableHTML += `<tr><td>${key}</td><td>${value}</td><td>${statusIcon}</td></tr>`;
-    }
-    tableHTML += "</table>";
-    gradesList.innerHTML = tableHTML;
+    // الرابط الصحيح لملف grades.json على GitHub
+    const url = "https://raw.githubusercontent.com/SalalahSharqiyaSchool/grade-system/main/grades.json?time=" + Date.now();
 
-    // رسالة تشجيعية حسب المتوسط
-    const grades = Object.entries(student).filter(([k,v])=>!["civil","name","photo"].includes(k)).map(([k,v])=>v);
-    const avg = grades.reduce((a,b)=>a+b,0)/grades.length;
-    encouragement.textContent = avg >= 80 ? "عمل رائع! استمر هكذا 👍" : "لا بأس، يمكنك التحسن مع الممارسة 💪";
+    fetch(url)
+        .then(res => {
+            if (!res.ok) throw new Error("الرابط غير صالح أو الملف غير موجود على GitHub");
+            return res.json();
+        })
+        .then(data => {
+            if (!Array.isArray(data)) throw new Error("ملف JSON غير صالح");
+
+            const student = data.find(s => s.رقم_مدني == civil);
+            if (!student) {
+                status.innerHTML = "لم يتم العثور على الرقم المدني في البيانات";
+                return;
+            }
+
+            status.innerHTML = "";
+            studentName.innerHTML = `الطالب: ${student.اسم}`;
+
+            const adviceMap = [
+                { min: 90, msg: "ممتاز! حافظ على هذا المستوى." },
+                { min: 75, msg: "جيد جدًا، ركز على مراجعة النقاط الصعبة." },
+                { min: 50, msg: "مقبول، يحتاج المزيد من الممارسة." },
+                { min: 0,  msg: "ضعيف، ننصح بمراجعة الدروس مع المعلم." }
+            ];
+
+            let html = "<table><tr><th>المادة</th><th>الدرجة</th><th>تحليل ونصيحة</th></tr>";
+            let total = 0, count = 0;
+
+            for (const key in student) {
+                if (key !== "رقم_مدني" && key !== "اسم") {
+                    const grade = parseFloat(student[key]);
+                    const advice = adviceMap.find(a => grade >= a.min).msg;
+                    let color = grade >= 90 ? "#c8e6c9" : grade >= 75 ? "#fff9c4" : grade >= 50 ? "#ffe0b2" : "#ffcdd2";
+
+                    html += `<tr style="background-color:${color}"><td>${key}</td><td>${grade}</td><td>${advice}</td></tr>`;
+                    total += grade;
+                    count++;
+                }
+            }
+
+            html += "</table>";
+            gradesList.innerHTML = `<div style="overflow-x:auto;">${html}</div>`;
+
+            const average = total / count;
+            let generalAdvice = average >= 90 ? "ممتاز! استمر على هذا المستوى الرائع 🌟"
+                              : average >= 75 ? "جيد جدًا! ركز على المواد التي تحتاج تعزيزًا 💪"
+                              : average >= 50 ? "مقبول، تحتاج لمزيد من الاجتهاد والمراجعة 📚"
+                              : "ينصح بمراجعة شاملة والدعم من المعلم 🔔";
+
+            encouragement.innerHTML = `<strong>متوسطك العام: ${average.toFixed(2)}</strong><br>${generalAdvice}`;
+        })
+        .catch(err => {
+            status.innerHTML = `خطأ في تحميل الدرجات: ${err.message}`;
+            console.error(err);
+        });
 }
 
-// تحميل التقرير PDF بشكل واضح
-function downloadPDF() {
-    const element = gradesList;
-
-    const opt = {
-        margin:       [10,10,10,10],
-        filename:     'تقرير_الطالب.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true },
-        jsPDF:        { unit: 'px', format: 'a4', orientation: 'landscape' } // أفقي للجدول الكبير
-    };
-
-    html2pdf().set(opt).from(element).save();
+function printGrades() {
+    const printContent = document.querySelector(".container").innerHTML;
+    const originalContent = document.body.innerHTML;
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
 }
